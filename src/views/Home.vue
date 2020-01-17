@@ -103,7 +103,12 @@
   </div>
 </template>
 
-<style></style>
+<style>
+section.box.feature img {
+  height: 250px;
+  object-fit: cover;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -157,11 +162,12 @@ export default {
       });
     },
     showProperty: function(property) {
-      if (this.currentProperty === property) {
-        this.currentProperty = {};
-      } else {
-        this.currentProperty = property;
-      }
+      this.$router.push("/properties/" + property.id);
+      // if (this.currentProperty === property) {
+      //   this.currentProperty = {};
+      // } else {
+      //   this.currentProperty = property;
+      // }
     },
     updateProperty: function(property) {
       var params = {
