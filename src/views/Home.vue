@@ -140,6 +140,7 @@ export default {
       this.selectedAmenities = response.data.map(amenity_user => amenity_user.id);
     });
   },
+
   methods: {
     createProperty: function() {
       var params = {

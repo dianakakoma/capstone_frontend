@@ -46,8 +46,16 @@
         </div>
       </div>
     </div>
+    <form v-on:submit.prevent="submit()">
+      <h2>Upload a your photos:</h2>
 
-    {{ property.create_date }}
+      <div>
+        Image:
+        <input type="file" v-on:change="setFile($event)" ref="fileInput" />
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
+    <div>{{ property.create_date }}</div>
   </div>
 </template>
 
@@ -57,7 +65,8 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      property: {}
+      property: {},
+      image: ""
     };
   },
 
@@ -74,6 +83,19 @@ export default {
       };
       axios.patch("/api/properties/" + this.property.id, params).then(response => {
         console.log("success");
+      });
+    },
+    setFile: function(event) {
+      if (event.target.files.length > 0) {
+        this.image = event.target.files[0];
+      }
+    },
+    submit: function() {
+      var formData = new FormData();
+      formData.append("image", this.image);
+
+      axios.post("/api/posts", formData).then(response => {
+        this.$refs.fileInput.value = "";
       });
     }
   }
