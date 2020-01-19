@@ -24,7 +24,8 @@
             <section class="last">
               <h2>{{ property.address }}</h2>
               <a v-bind:href="property.url" target="_blank">{{ property.url }}</a>
-              <p>{{ property.create_date }}</p>
+              <div>Upload date: {{ property.created_at }}</div>
+              <div>Last update on {{ property.updated_at }}</div>
 
               <form v-on:submit.prevent="updateProperty()">
                 <div class="form-group">
@@ -36,7 +37,7 @@
                   <input type="text" class="form-control" v-model="property.notes" />
                 </div>
                 <br />
-                <input type="submit" class="btn btn-primary" value="Submit" />
+                <input type="submit" class="btn btn-primary" value="Update Information" />
               </form>
 
               <br />
@@ -53,9 +54,8 @@
         Image:
         <input type="file" v-on:change="setFile($event)" ref="fileInput" />
       </div>
-      <input type="submit" value="Submit" />
+      <input type="submit" value="Submit Your Photos" />
     </form>
-    <div>{{ property.create_date }}</div>
   </div>
 </template>
 
@@ -93,9 +93,11 @@ export default {
     submit: function() {
       var formData = new FormData();
       formData.append("image", this.image);
+      formData.append("property_id", this.property.id);
 
-      axios.post("/api/posts", formData).then(response => {
+      axios.post("/api/images", formData).then(response => {
         this.$refs.fileInput.value = "";
+        this.property.images.push(response.data);
       });
     }
   }
