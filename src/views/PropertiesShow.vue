@@ -20,6 +20,8 @@
         </div>
         <div class="col-8 col-12-medium imp-medium">
           <!-- Content -->
+          <!-- mapbox -->
+          <div id="map" style="width: 400px; height: 300px;"></div>
           <div id="content">
             <section class="last">
               <h2>{{ property.address }}</h2>
@@ -60,6 +62,7 @@
 </template>
 
 <script>
+/* global mapboxgl */
 import axios from "axios";
 
 export default {
@@ -69,7 +72,13 @@ export default {
       image: ""
     };
   },
-
+  mounted: function() {
+    mapboxgl.accessToken = "pk.eyJ1IjoiZGlrYWtvbWEiLCJhIjoiY2s1bGp4aHM4MDl6OTNucGhncGc5MTQwMyJ9.1CSzGkIaH20XGn4jYKeOnw";
+    var map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/streets-v11"
+    });
+  },
   created: function() {
     axios.get("/api/properties/" + this.$route.params.id).then(response => {
       this.property = response.data;
