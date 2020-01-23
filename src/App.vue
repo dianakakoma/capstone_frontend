@@ -5,8 +5,8 @@
       <header id="header" class="container">
         <!-- Logo -->
         <div id="logo">
-          <h1><a href="index.html">Verti</a></h1>
-          <span>by HTML5 UP</span>
+          <h1><a href="index.html">Mooove</a></h1>
+          <span>by Diana</span>
         </div>
 
         <!-- Nav -->
@@ -31,7 +31,7 @@
           <div class="col-3 col-6-medium col-12-small">
             <!-- Links -->
             <section class="widget links">
-              <h3>Random Stuff</h3>
+              <h3>Budget Your Move</h3>
               <ul class="style2">
                 <li><a href="#">Etiam feugiat condimentum</a></li>
                 <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
@@ -44,7 +44,7 @@
           <div class="col-3 col-6-medium col-12-small">
             <!-- Links -->
             <section class="widget links">
-              <h3>Random Stuff</h3>
+              <h3>Moving Day</h3>
               <ul class="style2">
                 <li><a href="#">Etiam feugiat condimentum</a></li>
                 <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
@@ -57,7 +57,7 @@
           <div class="col-3 col-6-medium col-12-small">
             <!-- Links -->
             <section class="widget links">
-              <h3>Random Stuff</h3>
+              <h3>Chicago Neighborhood News</h3>
               <ul class="style2">
                 <li><a href="#">Etiam feugiat condimentum</a></li>
                 <li><a href="#">Aliquam imperdiet suscipit odio</a></li>

@@ -6,36 +6,54 @@
           <!-- Sidebar -->
           <div id="sidebar">
             <section class="widget thumbnails">
-              <h3>Interesting stuff</h3>
+              <h3>My Photos</h3>
               <div class="grid">
                 <div class="row gtr-50">
                   <div v-for="image in property.images" class="col-6">
-                    <a href="#" class="image fit"><img v-bind:src="image.url" alt="" /></a>
+                    <a v-bind:href="image.url" class="image fit"><img v-bind:src="image.url" alt="" /></a>
                   </div>
                 </div>
               </div>
-              <a href="#" class="button icon fa-file-alt">More</a>
+              <!--<a href="#" class="button icon fa-file-alt">More</a> -->
             </section>
+            <!--upload user photo -->
+            <form v-on:submit.prevent="submit()">
+              <h4>Add new photos to your gallery</h4>
+
+              <div>
+                Image:
+                <input type="file" v-on:change="setFile($event)" ref="fileInput" />
+              </div>
+              <input type="submit" value="Submit Your Photos" />
+            </form>
           </div>
         </div>
         <div class="col-8 col-12-medium imp-medium">
           <!-- Content -->
           <!-- mapbox -->
-          <div id="map" style="width: 400px; height: 300px;"></div>
+          <div id="map" style="width: 600px; height: 300px;"></div>
           <div id="content">
             <section class="last">
               <h2>{{ property.address }}</h2>
               <a v-bind:href="property.url" target="_blank">{{ property.url }}</a>
               <div>Upload date: {{ property.created_at }}</div>
+
               <div>Last update on {{ property.updated_at }}</div>
 
               <form v-on:submit.prevent="updateProperty()">
                 <div class="form-group">
-                  <label>Rating:</label>
-                  <input type="text" class="form-control" v-model="property.rating" />
+                  <h3>
+                    <label>Rating: {{ property.rating }}</label>
+                    <img v-if="property.rating == 1" class="img-star" src="../assets/1star.png" alt="" />
+                    <img v-if="property.rating == 2" class="img-star" src="../assets/2stars.png" alt="" />
+                    <img v-if="property.rating == 3" class="img-star" src="../assets/3stars.png" alt="" />
+                    <img v-if="property.rating == 4" class="img-star" src="../assets/4stars.png" alt="" />
+                    <img v-if="property.rating == 5" class="img-star" src="../assets/5stars.png" alt="" />
+                  </h3>
+                  <input type="number" min="0" max="5" class="form-control" v-model="property.rating" />
                 </div>
                 <div class="form-group">
-                  <label>Notes:</label>
+                  <h4><label>My notes and/or questions:</label></h4>
                   <input type="text" class="form-control" v-model="property.notes" />
                 </div>
                 <br />
@@ -49,20 +67,17 @@
         </div>
       </div>
     </div>
-    <form v-on:submit.prevent="submit()">
-      <h2>Upload a your photos:</h2>
-
-      <div>
-        Image:
-        <input type="file" v-on:change="setFile($event)" ref="fileInput" />
-      </div>
-      <input type="submit" value="Submit Your Photos" />
-    </form>
   </div>
 </template>
 
+<style>
+.img-star {
+  height: 50px;
+}
+</style>
+
 <script>
-/* global mapboxgl */
+/* global mapboxgl, mapboxSdk */
 import axios from "axios";
 
 export default {
@@ -73,18 +88,39 @@ export default {
     };
   },
   mounted: function() {
-    mapboxgl.accessToken = "pk.eyJ1IjoiZGlrYWtvbWEiLCJhIjoiY2s1bGp4aHM4MDl6OTNucGhncGc5MTQwMyJ9.1CSzGkIaH20XGn4jYKeOnw";
-    var map = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/streets-v11"
-    });
-  },
-  created: function() {
     axios.get("/api/properties/" + this.$route.params.id).then(response => {
       this.property = response.data;
+      this.setupMap();
     });
   },
   methods: {
+    setupMap: function() {
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiZGlrYWtvbWEiLCJhIjoiY2s1bGp4aHM4MDl6OTNucGhncGc5MTQwMyJ9.1CSzGkIaH20XGn4jYKeOnw";
+      var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+
+      mapboxClient.geocoding
+        .forwardGeocode({
+          query: this.property.address,
+          autocomplete: false,
+          limit: 1
+        })
+        .send()
+        .then(function(response) {
+          if (response && response.body && response.body.features && response.body.features.length) {
+            var feature = response.body.features[0];
+
+            var map = new mapboxgl.Map({
+              container: "map",
+              style: "mapbox://styles/mapbox/streets-v11",
+              center: feature.center,
+              zoom: 12
+            });
+
+            new mapboxgl.Marker().setLngLat(feature.center).addTo(map);
+          }
+        });
+    },
     updateProperty: function() {
       var params = {
         rating: this.property.rating,
