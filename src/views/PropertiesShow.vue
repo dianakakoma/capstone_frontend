@@ -35,7 +35,10 @@
           <div id="content">
             <section class="last">
               <h2>{{ property.address }}</h2>
+              <h2 style="color:green">${{ property.rent }}</h2>
+              Original listing:
               <a v-bind:href="property.url" target="_blank">{{ property.url }}</a>
+
               <div>Upload date: {{ property.created_at }}</div>
 
               <div>Last update on {{ property.updated_at }}</div>

@@ -49,20 +49,19 @@
                 <div class="form-group">
                   <h3>
                     <label>Rating: {{ property.rating }}</label>
-                    <!--
-                    <img
+                  </h3>
+                  <!-- <img
                       v-if="property.rating == 1"
                       class="img-star; image fit"
                       src="../assets/1star.png"
                       alt=""
                       height="15px"
                     />
-                    <img v-if="property.rating == 2" class="img-star; image fit" src="../assets/2stars.png" alt="" />
+                    <img v-if="property.rating == 2" class="img-star" src="../assets/2stars.png" alt="" />
                     <img v-if="property.rating == 3" class="img-star; image fit" src="../assets/3stars.png" alt="" />
                     <img v-if="property.rating == 4" class="img-star; image fit" src="../assets/4stars.png" alt="" />
                     <img v-if="property.rating == 5" class="img-star; image fit" src="../assets/5stars.png" alt="" />
-                  --></h3>
-                  <!--<input type="number" min="0" max="5" class="form-control" v-model="property.rating" /> -->
+                  <input type="number" min="0" max="5" class="form-control" v-model="property.rating" /> -->
                 </div>
                 <!--details button-->
                 <button v-on:click="showProperty(property)">Property Details...</button>
@@ -89,6 +88,10 @@ section.box.feature img {
 input[type="checkbox"].amenity-checkbox {
   -webkit-appearance: checkbox;
   appearance: checkbox;
+}
+
+.img-star {
+  height: 20px;
 }
 </style>
 
